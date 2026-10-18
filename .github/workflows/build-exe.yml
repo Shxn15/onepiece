@@ -1,1 +1,21 @@
+name: EXE bauen
 
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: PyInstaller installieren
+        run: pip install pyinstaller
+      - name: EXE bauen
+        run: pyinstaller --onefile --windowed --name OPDealScanner op_deal_scanner.py
+      - name: EXE hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: OPDealScanner
+          path: dist/OPDealScanner.exe
